@@ -128,19 +128,35 @@ function LinkedList(headNode = null) {
         insertAt(value, index) {
             if(!headNode || index <= 0) return "sorry, no can do";
 
-            let indexCount = 1;
-            let currentNode = headNode;
-            while(currentNode) {
-                if(indexCount === index) {
-                    let nextNodeStorage = currentNode;
-                    console.log(nextNodeStorage)
-                    currentNode.value = value;
-                    currentNode.nextNode = nextNodeStorage;
-                    return currentNode;
-                }
-
-                currentNode = currentNode.nextNode
+            if(index === 1) {
+                return list.prepend(value)
             }
+
+            let currentNode = headNode;
+            let previousNode = null;
+            for(let i = 1; i < index; i++) {
+                previousNode = currentNode;
+                currentNode = currentNode.nextNode;
+                if(currentNode == null) break;
+            }
+            let node = new Node(value)
+            previousNode.nextNode = node;
+            node.nextNode = currentNode;
+        },
+
+        removeAt(index) {
+            if(!headNode || index <= 0 || index > list.size()) return "sorry, no can do";
+
+            if(index === list.size()) {return list.pop()};
+
+            let currentNode = headNode;
+            let previousNode = null;
+            for(let i = 1; i < index; i++) {
+                previousNode = currentNode;
+                currentNode = currentNode.nextNode;
+                if(currentNode == null) break;
+            }
+            previousNode.nextNode = currentNode.nextNode;
         }
     }
 }
@@ -167,5 +183,7 @@ console.log(list.at(2))
 console.log(list.contains(2))
 console.log(list.find(2))
 console.log(list.toString())
-
-console.log(list.insertAt(5, 1))
+list.insertAt(5,5)
+console.log(list.toString())
+console.log(list.removeAt(2))
+console.log(list.toString())
